@@ -33,6 +33,14 @@ public class CustomerServiceImpl implements CustomerService {
         return true;
     }
     @Override
+    public boolean deleteCustomer(int id) {
+        Customer customer = customerDAO.delete();
+        if (customer==null){
+            return false;
+        }
+        return true;
+    }
+    @Override
     public CustomerDTO getCustomer(int id) {
         Customer customer = customerDAO.findByPk(id);
         if (customer==null){

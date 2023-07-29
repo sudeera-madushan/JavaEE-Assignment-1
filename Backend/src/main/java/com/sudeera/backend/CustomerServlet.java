@@ -17,6 +17,7 @@ import java.util.List;
 
 public class CustomerServlet extends HttpServlet {
     Jsonb jsonb=JsonbBuilder.create();
+    CustomerService customerService=ServiceFactory.getInstance().getService(ServiceTypes.CUSTOMER);
     @Override
     public void init() throws ServletException {
 
@@ -30,7 +31,6 @@ public class CustomerServlet extends HttpServlet {
         Jsonb jsonb = JsonbBuilder.create();
         CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
         {
-            CustomerService customerService = ServiceFactory.getInstance().getService(ServiceTypes.CUSTOMER);
             boolean b = customerService.saveCustomer(customerDTO);
             try {
                 System.out.println(b);
@@ -42,7 +42,9 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        CustomerService customerService=ServiceFactory.getInstance().getService(ServiceTypes.CUSTOMER);
+        if (req.getContentType()==null || !req.getContentType().toLowerCase().startsWith("application/json")){
+            resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+        }
         String id = req.getParameter("id");
         if (id!=null) {
             CustomerDTO customer = customerService.getCustomer(Integer.parseInt(id));
@@ -55,8 +57,16 @@ public class CustomerServlet extends HttpServlet {
             jsonb.toJson(customerService.getAllCustomers(),resp.getWriter());
         }
 
-
 //        List<CustomerDTO> allCustomers = customerService.getAllCustomers();
 
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (req.getContentType()==null || !req.getContentType().toLowerCase().startsWith("application/json")){
+            resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+        }
+        int id = Integer.parseInt(req.getParameter("id"));
+        customerService.delete(id);
     }
 }
