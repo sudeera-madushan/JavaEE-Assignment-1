@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="assest/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assest/css/fonts/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+
+<!--    <style>-->
+<!--        body>nav>section{-->
+<!--            background-color: blueviolet;-->
+<!--            position: relative;-->
+<!--            width: 500px;-->
+<!--            height: 100%;-->
+<!--            transition-property: width;-->
+<!--            transition-duration: 4s;-->
+<!--        }-->
+<!--        body>nav>section:hover{-->
+<!--            width: 50vw;-->
+<!--            background-color: crimson;-->
+<!--            transition-property: all;-->
+<!--            transition-duration: 4s;-->
+<!--        }-->
+<!--    </style>-->
+    <style>
+        body>section>section>div{
+            height: 25vh;
+            margin: 30px;
+            border-radius: 20px;
+        }
+        .popup{
+            z-index: 100;
+            display: flex;
+            background-color: #d1e7dd;
+            width: 400px;
+            height: 350px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%,-50%)scale(0.1);
+            text-align: center;
+            padding: 0 30px 30px;
+            border-radius: 20px;
+            visibility: hidden;
+            transition: transform 0.1s,top 0.1s;
+            box-shadow: 5px 5px 20px 5px;
+        }
+    </style>
+</head>
+<body>
+<!--Customer Form-->
+<div class="container row popup text-start d-flex" id="newCustomerForm">
+    <div class="col-12" style="height: 50px">
+            <label for="customerIDC" class="form-check-label">Customer ID :</label>
+            <input class="form-control form-control-sm" type="text" placeholder="C001" aria-label="customerID" id="customerIDC">
+    </div>
+    <div class="col-12" style="height: 50px">
+            <label for="customerNameC" class="form-check-label">Name :</label>
+            <input class="form-control form-control-sm" type="text" placeholder="Name" aria-label="name" id="customerNameC">
+    </div>
+    <div class="col-12" style="height: 50px">
+            <label for="customerAddressC" class="form-check-label">Address :</label>
+            <input class="form-control form-control-sm" type="text" placeholder="Address" aria-label="address" id="customerAddressC">
+    </div>
+    <div class="col-12" style="height: 50px">
+            <label for="customerMobileC" class="form-check-label">Mobile :</label>
+            <input class="form-control form-control-sm" type="text" placeholder="0770000000" aria-label="mobile" id="customerMobileC">
+    </div>
+    <div class="col-12" style="height: 50px">
+            <label for="customerSalaryC" class="form-check-label">Salary :</label>
+            <input class="form-control form-control-sm" type="text" placeholder="10000.0" aria-label="salary" id="customerSalaryC">
+    </div>
+    <div class="col-6"></div>
+    <div class="col-3 p-4 " style="height: 50px" id="btnSaveNewCustomer">
+            <button class="btn btn-success">Save</button>
+    </div>
+    <div class="col-3 p-4" style="height: 50px" id="btnCanceNewCustomer">
+            <button class="btn btn-danger">Cancel</button>
+    </div>
+</div>
+<!--Item Form-->
+<div class="container row popup text-start d-flex" id="newItemForm">
+    <div class="col-12" style="height: 50px">
+            <label for="itemCodeI" class="form-check-label">Item Code :</label>
+            <input class="form-control form-control-sm" type="text" placeholder="C001" aria-label="customerID" id="itemCodeI">
+    </div>
+    <div class="col-12" style="height: 50px">
+            <label for="itemNameI" class="form-check-label">Name :</label>
+            <input class="form-control form-control-sm" type="text" placeholder="Name" aria-label="name" id="itemNameI">
+    </div>
+    <div class="col-12" style="height: 50px">
+            <label for="itemQTYI" class="form-check-label">QTY :</label>
+            <input class="form-control form-control-sm" type="text" placeholder="0" aria-label="address" id="itemQTYI">
+    </div>
+    <div class="col-12" style="height: 50px">
+            <label for="itemPriceI" class="form-check-label">Price :</label>
+            <input class="form-control form-control-sm" type="text" placeholder="0.0" aria-label="mobile" id="itemPriceI">
+    </div>
+    <div class="col-6"></div>
+    <div class="col-3 p-4 " style="height: 50px" id="btnSaveNewItem">
+            <button class="btn btn-success">Save</button>
+    </div>
+    <div class="col-3 p-4" style="height: 50px" id="btnCancelNewItem">
+            <button class="btn btn-danger">Cancel</button>
+    </div>
+</div>
+
+
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary shadow p-1 mb-4 bg-body-tertiary rounded">
+    <div class="container-fluid">
+        <img class="p-2" src="assest/image/icon/forage.png" alt="forage image">
+        <a class="navbar-brand" style="color: darkslateblue " href="#">Sudeera POS System</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#" id="navViewHome">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#" id="navViewOrders">Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#" id="navViewItem">Items</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#" id="navViewCustomer">Customers</a>
+                </li>
+            </ul>
+            <form class="d-flex" role="search">
+                <button type="button" class="btn fa-solid fa-user-plus"> Sign Up</button>
+                <button type="button" class="btn fa-solid fa-right-from-bracket"> Log Out</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<!--<section class="container text-center">-->
+
+<!--Home Section-->
+<section class="container-sm"  id="homeSection"  >
+
+    <section class="row justify-content-md-center">
+        <div class="col-10 col-sm-4 col-md-5" style="background-color: #f72585">
+            <div class="row justify-content-center">
+                <div class="col-10"><h1 style="color: white">Customers</h1></div>
+                <hr style="height: 3px;  background-color: white">
+                <button class="btn btn-light" style="width: 100px;" id="btnViewCustomers">View</button>
+            </div>
+        </div>
+        <div class="col-10 col-sm-4 col-md-5" style="background-color: #758bfd">
+            <div class="row justify-content-center">
+                <div class="col-10"><h1 style="color: white">Items</h1></div>
+                <hr style="height: 3px;background-color: white">
+                <button class="btn btn-light" style="width: 100px;" id="btnViewItems">View</button>
+            </div>
+        </div>
+    </section>
+    <section class="row justify-content-md-center">
+        <div class="col-10 col-sm-4 col-md-5" style="background-color: #06d6a0">
+            <div class="row justify-content-center">
+                <div class="col-10"><h1 style="color: white">Orders</h1></div>
+                <hr style="height: 3px;background-color: white">
+                <button class="btn btn-light" style="width: 100px;" id="btnViewOrders">View</button>
+            </div>
+        </div>
+        <div class="col-10 col-sm-4 col-md-5" style="background-color: #ffa62b">
+            <div class="row justify-content-center">
+                <div class="col-10"><h1 style="color: white">Total</h1></div>
+                <hr style="height: 3px;background-color: white">
+                <button class="btn btn-light" style="width: 100px;" id="btnViewTotal">View</button>
+            </div>
+        </div>
+    </section>
+</section>
+
+
+<!--Customer Section-->
+<section class="container "  style="display: none" id="customerSection">
+    <div class="row text-end">
+        <div class="col-10 p-2">
+            <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
+            <datalist id="datalistOptions">
+                <!--<option value="San Francisco">
+                <option value="New York">
+                <option value="Seattle">
+                <option value="Los Angeles">
+                <option value="Chicago">-->
+            </datalist>
+        </div>
+        <div class="col-2 p-2">
+            <button class="btn btn-outline-primary" id="btnNewCustomer">New Customer</button>
+        </div>
+    </div>
+    <div class="row bg-light rounded ">
+        <div class="col-12" style="height: 500px">
+            <table class="table table-light rounded" id="customer-table">
+                <thead class="table-danger">
+                <tr>
+                    <th scope="col">Customer ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Mobile</th>
+                    <th scope="col">Salary</th>
+                    <th scope="col">Edit</th>
+                </tr>
+                </thead>
+                <tbody id="tableCustomerBody"><!--
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td width="15%">
+                        <button class="btn btn-success">Edite</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!--Item Section-->
+<section class="container " id="itemSection" style="display: none">
+    <div class="row text-end">
+        <div class="col-10 p-2">
+            <input class="form-control" list="datalistOptions" id="itemSearchI" placeholder="Type to search...">
+            <datalist id="datalistOptionsItem">
+            </datalist>
+        </div>
+        <div class="col-2 p-2">
+            <button class="btn btn-outline-primary" id="btnNewItem">New Item</button>
+        </div>
+    </div>
+    <div class="row bg-light rounded ">
+        <div class="col-12" style="height: 500px">
+            <table id="item-table" class="table table-light rounded">
+                <thead class="table-danger">
+                <tr>
+                    <th scope="col">Item Code</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">QTY</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Edit</th>
+                </tr>
+                </thead>
+                <tbody id="tableItemBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!--Order Section-->
+<section class="container text-center" id="orderSection" style="display: none">
+    <div class="row">
+        <div class="col-xl-4 col-sm-5 text-start">
+            <hr>
+            <div class="row">
+                <div class="col-6">
+                    <label for="customerIDC" class="form-check-label">Order ID :</label>
+                    <input class="form-control form-control-sm" type="text" placeholder="C001" aria-label="customerID" >
+                </div>
+                <div class="col-6">
+                    <label for="customerIDC" class="form-check-label">Date :</label>
+                    <input class="form-control form-control-sm" type="text" placeholder="C001" aria-label="customerID" >
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label for="customerIDC" class="form-check-label">Customer ID :</label>
+                    <input class="form-control form-control-sm" type="text" id="customerIDOrder" placeholder="C001" aria-label="customerID" >
+                </div>
+                <div class="col-6 p-3">
+                    <button class="btn btn-success" id="searchCusOrder">Search</button>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-6">
+                    <label for="customerIDC" class="form-check-label">Name :</label>
+                    <input class="form-control form-control-sm" type="text" placeholder="C001" id="customerNameOrder" aria-label="customerID" >
+                </div>
+                <div class="col-6">
+                    <label for="customerIDC" class="form-check-label">Address :</label>
+                    <input class="form-control form-control-sm" type="text" placeholder="C001" id="customerAddressOrder" aria-label="customerID" >
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <label for="customerIDC" class="form-check-label">Salary :</label>
+                    <input class="form-control form-control-sm" type="text" placeholder="C001" id="customerSalaryOrder" aria-label="customerID" >
+                </div>
+                <div>
+                    <label for="customerIDC" class="form-check-label">Mobile :</label>
+                    <input class="form-control form-control-sm" type="text" placeholder="C001" id="customerMobileOrder" aria-label="customerID" >
+                </div>
+            </div>
+            <br>
+        </div>
+        <div class="col-1 "></div>
+        <div class="col-xl-4 col-sm-5 text-start">
+            <hr>
+            <div class="row">
+                <div class="col-6">
+                    <label for="customerIDC" class="form-check-label">Item Code :</label>
+                    <input class="form-control form-control-sm" type="text" id="itemCodeOrder" placeholder="I001" aria-label="customerID" >
+                </div>
+                <div class="col-6 p-3">
+                    <button class="btn btn-success" id="searchItemOrder" >Search</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <label for="customerIDC" class="form-check-label">Name :</label>
+                    <input class="form-control form-control-sm" type="text" id="itemNameOrder" placeholder="Item" aria-label="customerID" >
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label for="customerIDC" class="form-check-label">QTY On Hand :</label>
+                    <input class="form-control form-control-sm" type="text" id="itemQtyOnOrder" placeholder="0" aria-label="customerID" >
+                </div>
+                <div class="col-6">
+                    <label for="customerIDC" class="form-check-label">Price :</label>
+                    <input class="form-control form-control-sm" type="text" id="itemPriceOrder" placeholder="0.0" aria-label="customerID" >
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <label for="customerIDC" class="form-check-label">Quantity :</label>
+                    <input class="form-control form-control-sm" id="itemQuentityOrder" type="text" placeholder="0" aria-label="customerID" >
+                </div>
+                <div class="text-end p-2">
+                    <button class="btn btn-success " id="addToCartBtn">Add Cart</button>
+                </div>
+            </div>
+            <br>
+        </div>
+        <div class="col-xl-1"></div>
+        <div class="col-xl-2 col-sm-12 text-start p-2">
+            <hr>
+            <div class="row">
+                <p class="h4">Total :     0.0</p>
+            </div>
+            <div class="row">
+                <p class="h4">Sub Total : 0.0</p>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label for="customerIDC" class="form-check-label">Cash :</label>
+                    <input class="form-control form-control-sm" type="text" placeholder="0" aria-label="customerID" >
+                </div>
+                <div class="col-6">
+                    <label for="customerIDC" class="form-check-label">Discount :</label>
+                    <input class="form-control form-control-sm" type="text" placeholder="0.0" aria-label="customerID" >
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <label for="customerIDC" class="form-check-label">Balance :</label>
+                    <input class="form-control form-control-sm" type="text" placeholder="0.0" aria-label="customerID" >
+                </div>
+            </div>
+
+            <div class=" row text-end p-2">
+                <button class="btn btn-danger ">Purchase Order</button>
+            </div>
+            <br>
+        </div>
+
+
+    </div>
+    <div class="row bg-light rounded">
+        <div class="col-12 p-3" style="height: 200px">
+            <table class="table table-light rounded " >
+                <thead class="table-danger">
+                <tr>
+                    <th scope="col">Item Code</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">QTY</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Edit</th>
+                </tr>
+                </thead>
+                <tbody id="tableCartBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<script src="assest/bootstrap/js/bootstrap.min.js"></script>
+<script src="lib/jquery-3.6.4.min.js"></script>
+<script type="module" src="model/Customer.js"></script>
+<script  type="module" src="model/Item.js"></script>
+<script type="module"  src="model/OrderDetail.js"></script>
+<script type="module"  src="model/Order.js"></script>
+<script type="module" src="controller/CustomerController.js"></script>
+<script type="module"  src="controller/ItemController.js"></script>
+<script type="module"  src="controller/OrderController.js"></script>
+<script type="module"  src="controller/DashboardController.js"></script>
+<script>
+    // // const cusData="DATA";
+    // const itemData="ITEMS";
+    // const cartData="CART";
+
+
+
+    // function checkCartResentId(arr,id){
+    //     for (let i = 0; i < arr.length; i++) {
+    //         if (arr[i].customerID===id) {
+    //             return i;
+    //         }
+    //     }
+    //     return -1;
+    // }
+
+
+
+
+
+
+</script>
+</body>
+</html>

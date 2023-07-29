@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../assest/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assest/css/fonts/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <style>
+        body>section>section>div{
+            height: 25vh;
+            margin: 30px;
+            border-radius: 20px;
+        }
+        .popup{
+            z-index: 100;
+            display: flex;
+            background-color: #d1e7dd;
+            width: 400px;
+            height: 350px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%,-50%)scale(0.1);
+            text-align: center;
+            padding: 0 30px 30px;
+            border-radius: 20px;
+            visibility: hidden;
+            transition: transform 0.1s,top 0.1s;
+            box-shadow: 5px 5px 20px 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container row popup text-start d-flex" id="newCustomerForm">
+    <div class="col-12" style="height: 50px">
+        <label for="customerIDC" class="form-check-label">Customer ID :</label>
+        <input class="form-control form-control-sm" type="text" placeholder="C001" aria-label="customerID" id="customerIDC">
+    </div>
+    <div class="col-12" style="height: 50px">
+        <label for="customerNameC" class="form-check-label">Name :</label>
+        <input class="form-control form-control-sm" type="text" placeholder="Name" aria-label="name" id="customerNameC">
+    </div>
+    <div class="col-12" style="height: 50px">
+        <label for="customerAddressC" class="form-check-label">Address :</label>
+        <input class="form-control form-control-sm" type="text" placeholder="Address" aria-label="address" id="customerAddressC">
+    </div>
+    <div class="col-12" style="height: 50px">
+        <label for="customerMobileC" class="form-check-label">Mobile :</label>
+        <input class="form-control form-control-sm" type="text" placeholder="0770000000" aria-label="mobile" id="customerMobileC">
+    </div>
+    <div class="col-12" style="height: 50px">
+        <label for="customerSalaryC" class="form-check-label">Salary :</label>
+        <input class="form-control form-control-sm" type="text" placeholder="10000.0" aria-label="salary" id="customerSalaryC">
+    </div>
+    <div class="col-6"></div>
+    <div class="col-3 p-4 " style="height: 50px" id="btnSaveNewCustomer">
+        <button class="btn btn-success">Save</button>
+    </div>
+    <div class="col-3 p-4" style="height: 50px" id="btnCanceNewCustomer">
+        <button class="btn btn-danger">Cancel</button>
+    </div>
+</div>
+<nav class="navbar navbar-expand-lg bg-body-tertiary shadow p-1 mb-5 bg-body-tertiary rounded">
+    <div class="container-fluid">
+        <img class="p-2" src="../assest/image/icon/forage.png" alt="forage image">
+        <a class="navbar-brand" style="color: darkslateblue " href="#">Sudeera POS System</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Items</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Customers</a>
+                </li>
+            </ul>
+            <form class="d-flex" role="search">
+                <button type="button" class="btn fa-solid fa-user-plus"> Sign Up</button>
+                <button type="button" class="btn fa-solid fa-right-from-bracket"> Log Out</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<section class="container "  id="customerSection">
+    <div class="row text-end">
+        <div class="col-10 p-2">
+            <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
+            <datalist id="datalistOptions">
+                <!--<option value="San Francisco">
+                <option value="New York">
+                <option value="Seattle">
+                <option value="Los Angeles">
+                <option value="Chicago">-->
+            </datalist>
+        </div>
+        <div class="col-2 p-2">
+            <button class="btn btn-outline-primary" id="btnNewCustomer">New Customer</button>
+        </div>
+    </div>
+    <div class="row bg-light rounded ">
+        <div class="col-12" style="height: 500px">
+            <table class="table table-light rounded">
+                <thead class="table-danger">
+                <tr>
+                    <th scope="col">Customer ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Mobile</th>
+                    <th scope="col">Salary</th>
+                    <th scope="col">Edit</th>
+                </tr>
+                </thead>
+                <tbody id="tableCustomerBody"><!--
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td width="15%">
+                        <button class="btn btn-success">Edite</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+
+<script src="/../assest/bootstrap/js/bootstrap.min.js"></script>
+<script src="/../lib/jquery-3.6.4.min.js"></script>
+<script>
+
+
+    function showNewCustomer(){
+        $('#customerIDC').val("");
+        $('#customerNameC').val("");
+        $('#customerAddressC').val("");
+        $('#customerMobileC').val("");
+        $('#customerSalaryC').val("");
+        $('#newCustomerForm').css({
+            visibility: "visible",
+            top:"50%",
+            transform: "translate(-50%,-50%)scale(1)",
+        })
+    }
+
+    function closeNewCustomer(){
+        $('#newCustomerForm').css({
+            transform: "translate(-50%,-50%)scale(0.1)",
+            top:"0%",
+            // transition: "transform 0.1s,top 0.1s",
+            visibility: "hidden"
+        })
+    }
+
+    function saveNewCustomer(){
+        let customerID = $('#customerIDC').val();
+        let name = $('#customerNameC').val();
+        let address = $('#customerAddressC').val();
+        let mobile = $('#customerMobileC').val();
+        let salary = $('#customerSalaryC').val();
+        var data=`
+                <tr>
+                    <th scope="row">${customerID}</th>
+                    <td>${name}</td>
+                    <td>${address}</td>
+                    <td>${mobile}</td>
+                    <td>${salary}</td>
+                    <td width="15%">
+                        <button class="btn btn-success" onclick="showNewCustomer()">Edite</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>`
+        var data2=`<option value="${name}">`
+        $('#tableCustomerBody').append(data);
+        $('#datalistOptions').append(data2);
+        closeNewCustomer();
+    }
+
+    $('#btnNewCustomer').click(showNewCustomer);
+    $('#btnCanceNewCustomer').click(closeNewCustomer);
+    $('#btnSaveNewCustomer').click(saveNewCustomer);
+</script>
+</body>
+</html>
