@@ -21,7 +21,7 @@ public class CORSFilter implements Filter {
         httpResponse.setHeader("Access-Control-Allow-Origin", "*");
 
         // Allow specific HTTP methods (e.g., GET, POST, OPTIONS, etc.)
-        httpResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        httpResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
 
         // Allow specific HTTP headers
         httpResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");

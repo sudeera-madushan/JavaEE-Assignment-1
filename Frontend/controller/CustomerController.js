@@ -7,14 +7,30 @@ const cusAddressRegx=/^([A-Za-z0-9,.]){3,}$/;
 const cusMobileRegx = /^0\d{9}$/;
 const cusSalaryRegx = /^\d+(,\d{3})*(\.\d{1,2})?$/;
 let customerArr=[];
-let deleteCustomer=function (i){
-    let customers=JSON.parse(localStorage.getItem(cusData));
-    customers.map((result, index) => {
-        if (result._id===i._id){
-            customers.splice(index,1);
+let deleteCustomer=function (customer){
+    // let customers=JSON.parse(localStorage.getItem(cusData));
+    // customers.map((result, index) => {
+    //     if (result._id===i._id){
+    //         customers.splice(index,1);
+    //     }
+    // });
+    // localStorage.setItem(cusData,JSON.stringify(customers));
+    // loadCustomerData();
+    console.log(customer)
+    $.ajax({
+
+        url: 'http://localhost:8080/pos/customer',
+        type:'POST',
+        data:customer,
+        contentType: 'application/json',
+        success:function (response){
+            console.log('Student data Delete successfully',response)
+            // loadCustomerData(response)
+        },
+        error(error){
+            console.error('Failed to save student data .Error : ',error)
         }
-    });
-    localStorage.setItem(cusData,JSON.stringify(customers));
+    })
     loadCustomerData();
 }
 
@@ -166,19 +182,22 @@ function showNewCustomer(customer) {
 
 
 $('#customer-table').on('click','button',(e) =>{
-    let id = e.target.id;
-    let text = $(e.target).closest('tr').find('th').eq(0).text();
-    let customerArr=JSON.parse(localStorage.getItem("DATA"));
-    let customer;
-    customerArr.map((value, index) => {
-        if (value._id===text){
-            customer=value;
-        }
-    });
-    if (id==="btn-edite"){
+    let button = e.target.id;
+    let id = $(e.target).closest('tr').find('th').eq(0).text();
+    let name = $(e.target).closest('tr').find('td').eq(0).text();
+    let address = $(e.target).closest('tr').find('td').eq(1).text();
+    let mobile = $(e.target).closest('tr').find('td').eq(2).text();
+    let salary = $(e.target).closest('tr').find('td').eq(3).text();
+    let customer={
+        id:id,
+        name:name,
+        address:address,
+        mobile:mobile,
+        salary:salary};
+    if (button==="btn-edite"){
         showNewCustomer(customer);
-    }else if(id==="btn-delete"){
-        deleteCustomer(customer);
+    }else if(button==="btn-delete"){
+        deleteCustomer(JSON.stringify(customer));
     }
 });
 

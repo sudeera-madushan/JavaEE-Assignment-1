@@ -1,6 +1,7 @@
 package com.sudeera.backend.dao.custom.impl;
 
 import com.sudeera.backend.dao.custom.ItemDAO;
+import com.sudeera.backend.entity.Customer;
 import com.sudeera.backend.entity.Item;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -59,6 +60,21 @@ public class ItemDAOImpl implements ItemDAO {
             return null;
         }
     }
+
+    @Override
+    public Item delete(Item entity) {
+        Transaction transaction=session.beginTransaction();
+        try {
+            session.delete(entity);
+            transaction.commit();
+            return entity;
+        }catch (Exception e){
+            transaction.rollback();
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @Override
     public List<Item> getAll() {
         String SQL="From item ";

@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class Convertor {
 
     public CustomerDTO fromCustomer(Customer customer){
-        return new CustomerDTO(customer.getId(), customer.getName(), customer.getAddress(), customer.getMobile(), customer.getSalary(),null);
+        return new CustomerDTO(customer.getId(), customer.getName(), customer.getAddress(), customer.getMobile(), customer.getSalary());
     }
 
     public Customer toCustomer(CustomerDTO customer){

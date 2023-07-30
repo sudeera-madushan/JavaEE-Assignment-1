@@ -61,6 +61,22 @@ public class CustomerDAOImpl implements CustomerDAO {
             return null;
         }
     }
+
+    @Override
+    public Customer delete(Customer entity) {
+        Transaction transaction=session.beginTransaction();
+        try {
+            session.delete(entity);
+            transaction.commit();
+            return entity;
+        }catch (Exception e){
+            transaction.rollback();
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
     @Override
     public List<Customer> getAll() {
         CriteriaQuery<Customer> query = session.getCriteriaBuilder().createQuery(Customer.class);

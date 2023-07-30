@@ -15,6 +15,7 @@ public interface CrudDAO<T extends SuperEntity,ID extends Serializable> extends 
     T update(T entity) throws ConstraintViolationException;
 
     T findByPk(ID pk) ;
+    T delete(T entity) ;
 
 
     public List<T> getAll();

@@ -25,19 +25,30 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        if (req.getContentType()==null || !req.getContentType().toLowerCase().startsWith("application/json")){
+//            resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+//        }
+//        Jsonb jsonb = JsonbBuilder.create();
+//        CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
+//        {
+//            boolean b = customerService.saveCustomer(customerDTO);
+//            try {
+//                System.out.println(b);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+
+
         if (req.getContentType()==null || !req.getContentType().toLowerCase().startsWith("application/json")){
             resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
         }
-        Jsonb jsonb = JsonbBuilder.create();
         CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
-        {
-            boolean b = customerService.saveCustomer(customerDTO);
-            try {
-                System.out.println(b);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        System.out.println(customerDTO);
+        customerDTO = customerService.deleteCustomer(customerDTO);
+        resp.setStatus(HttpServletResponse.SC_OK);
+        resp.setContentType("application/json");
+        jsonb.toJson(customerDTO,resp.getWriter());
     }
 
     @Override
@@ -63,10 +74,15 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getContentType()==null || !req.getContentType().toLowerCase().startsWith("application/json")){
-            resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-        }
-        int id = Integer.parseInt(req.getParameter("id"));
-        customerService.delete(id);
+//        if (req.getContentType()==null || !req.getContentType().toLowerCase().startsWith("application/json")){
+//            resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+//        }
+//        CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
+//        customerDTO = customerService.deleteCustomer(customerDTO);
+//        resp.setStatus(HttpServletResponse.SC_OK);
+//        resp.setContentType("application/json");
+//        jsonb.toJson(customerDTO,resp.getWriter());
+        System.out.println("YEEE");;
     }
+
 }

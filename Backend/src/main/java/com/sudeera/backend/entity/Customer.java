@@ -32,4 +32,7 @@ public class Customer extends SuperEntity {
     @OneToMany(mappedBy = "customer",targetEntity = Orders.class)
     private List<Orders> ordersList=new ArrayList<>();
 
+    public Customer(int id) {
+        this.id = id;
+    }
 }

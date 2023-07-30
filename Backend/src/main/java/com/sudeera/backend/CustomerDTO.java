@@ -19,5 +19,4 @@ public class CustomerDTO {
     private String address;
     private String mobile;
     private Double salary;
-    private List<Orders> ordersList=new ArrayList<>();
 }
