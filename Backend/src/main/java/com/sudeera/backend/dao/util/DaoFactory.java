@@ -1,6 +1,7 @@
 package com.sudeera.backend.dao.util;
 
 import com.sudeera.backend.dao.custom.impl.CustomerDAOImpl;
+import com.sudeera.backend.dao.custom.impl.ItemDAOImpl;
 import org.hibernate.Session;
 
 public class DaoFactory {
@@ -15,9 +16,9 @@ public class DaoFactory {
 
     public <T extends SuperDAO> T getDAO(Session session, DaoTypes daoType) {
         switch (daoType){
-//            case CARTDETAILS:
-//                return (T)new CartDetailsDAOImpl(session);
-//
+            case ITEM:
+                return (T)new ItemDAOImpl(session);
+
             case CUSTOMER:
                 return (T)new CustomerDAOImpl(session);
 //            case PLACEORDER:

@@ -8,6 +8,7 @@ import org.hibernate.exception.ConstraintViolationException;
 
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,14 +36,25 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public Customer save(Customer entity) throws ConstraintViolationException {
-        Transaction transaction=session.beginTransaction();
+        Transaction transaction;
         try {
-            int id = (int) session.save(entity);
-            transaction.commit();
-            entity.setId(id);
+
+            Customer customer = session.get(Customer.class, entity.getId());
+            if (customer==null) {
+                transaction=session.beginTransaction();
+                int id = (int) session.save(entity);
+                entity.setId(id);
+                transaction.commit();
+            }else {
+                transaction=session.beginTransaction();
+                customer.setAddress(entity.getAddress());
+                customer.setName(entity.getName());
+                customer.setSalary(entity.getSalary());
+                session.update(customer);
+                transaction.commit();
+            }
             return entity;
         }catch (Exception e){
-            transaction.rollback();
             e.printStackTrace();
             return null;
         }
@@ -66,9 +78,10 @@ public class CustomerDAOImpl implements CustomerDAO {
     public Customer delete(Customer entity) {
         Transaction transaction=session.beginTransaction();
         try {
-            session.delete(entity);
+            Customer customer = session.get(Customer.class, entity.getId());
+            session.delete(customer);
             transaction.commit();
-            return entity;
+            return customer;
         }catch (Exception e){
             transaction.rollback();
             e.printStackTrace();

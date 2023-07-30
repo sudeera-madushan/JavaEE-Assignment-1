@@ -8,24 +8,16 @@ const cusMobileRegx = /^0\d{9}$/;
 const cusSalaryRegx = /^\d+(,\d{3})*(\.\d{1,2})?$/;
 let customerArr=[];
 let deleteCustomer=function (customer){
-    // let customers=JSON.parse(localStorage.getItem(cusData));
-    // customers.map((result, index) => {
-    //     if (result._id===i._id){
-    //         customers.splice(index,1);
-    //     }
-    // });
-    // localStorage.setItem(cusData,JSON.stringify(customers));
-    // loadCustomerData();
     console.log(customer)
     $.ajax({
 
         url: 'http://localhost:8080/pos/customer',
-        type:'POST',
+        type:'DELETE',
         data:customer,
         contentType: 'application/json',
         success:function (response){
             console.log('Student data Delete successfully',response)
-            // loadCustomerData(response)
+            loadCustomerData()
         },
         error(error){
             console.error('Failed to save student data .Error : ',error)
@@ -35,16 +27,12 @@ let deleteCustomer=function (customer){
 }
 
 function addToCustomerArray(){
-    let pre_data = localStorage.getItem(cusData);
-    let data_arr=[];
-    if(pre_data) {
-        data_arr = JSON.parse(pre_data);
-    }
-    let customer = new Customer(0,
-        $('#customerNameC').val(),
-        $('#customerAddressC').val(),
-        $('#customerMobileC').val(),
-        parseFloat($('#customerSalaryC').val()));
+    // let pre_data = localStorage.getItem(cusData);
+    // let data_arr=[];
+    // if(pre_data) {
+    //     data_arr = JSON.parse(pre_data);
+    // }
+
     // let index =checkCusResentId(data_arr,customer._id);
     // if (index!==-1) {
     //     data_arr[index]._name = $('#customerNameC').val(),
@@ -66,6 +54,11 @@ function addToCustomerArray(){
     //     mobile:"skdkskfnnsf",
     //     salary:1
     // }
+    let customer = new Customer(parseInt($('#customerIDC').val()),
+        $('#customerNameC').val(),
+        $('#customerAddressC').val(),
+        $('#customerMobileC').val(),
+        parseFloat($('#customerSalaryC').val()));
     createAjaxReq(customer);
 
 }
@@ -82,11 +75,11 @@ let createAjaxReq = (customer) =>{
 
         url: 'http://localhost:8080/pos/customer',
         type:'POST',
-        data:customer,
+        data:jStudent,
         contentType: 'application/json',
         success:function (response){
             console.log('Student data saved successfully',response)
-            loadCustomerData(response)
+            loadCustomerData()
         },
         error(error){
             console.error('Failed to save student data .Error : ',error)
@@ -168,11 +161,11 @@ function showNewCustomer(customer) {
     if (!customer){
         customer=new Customer("","","","","");
     }
-        $('#customerIDC').val(customer._id);
-        $('#customerNameC').val(customer._name);
-        $('#customerAddressC').val(customer._address);
-        $('#customerMobileC').val(customer._mobile);
-        $('#customerSalaryC').val(customer._salary);
+        $('#customerIDC').val(customer.id);
+        $('#customerNameC').val(customer.name);
+        $('#customerAddressC').val(customer.address);
+        $('#customerMobileC').val(customer.mobile);
+        $('#customerSalaryC').val(customer.salary);
     $('#newCustomerForm').css({
         visibility: "visible",
         top:"50%",
@@ -205,7 +198,7 @@ $('#customerIDC').on('keyup',(event) =>{
     checkCustomerId(event);
 });
 function checkCustomerId(event){
-    if (cusIdRegx.test($('#customerIDC').val())){
+    if (/*cusIdRegx.test($('#customerIDC').val())*/true){
         $('#customerIDC').css({borderColor : "green"})
         if (event.key==='Enter') {
             $('#customerNameC').focus();

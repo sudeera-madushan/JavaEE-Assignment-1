@@ -7,7 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 
-import java.util.ArrayList;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 public class ItemDAOImpl implements ItemDAO {
@@ -16,7 +16,6 @@ public class ItemDAOImpl implements ItemDAO {
     public ItemDAOImpl(Session session) {
         this.session=session;
     }
-
 
     @Override
     public Item update(Item entity) throws ConstraintViolationException {
@@ -34,21 +33,32 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public Item save(Item entity) throws ConstraintViolationException {
-        Transaction transaction=session.beginTransaction();
+        Transaction transaction;
         try {
-            int id = (int) session.save(entity);
-            transaction.commit();
-            entity.setId(id);
+
+            Item item = session.get(Item.class, entity.getId());
+            if (item==null) {
+                transaction=session.beginTransaction();
+                int id = (int) session.save(entity);
+                entity.setId(id);
+                transaction.commit();
+            }else {
+                transaction=session.beginTransaction();
+                item.setQtyOnHand(entity.getQtyOnHand());
+                item.setName(entity.getName());
+                item.setUnitPrice(entity.getUnitPrice());
+                session.update(item);
+                transaction.commit();
+            }
             return entity;
         }catch (Exception e){
-            transaction.rollback();
             e.printStackTrace();
             return null;
         }
     }
 
     @Override
-    public Item findByPk(String pk) {
+    public Item findByPk(Integer pk) {
         Transaction transaction=session.beginTransaction();
         try {
             Item item  = (Item) session.get(Item.class,pk);
@@ -65,21 +75,23 @@ public class ItemDAOImpl implements ItemDAO {
     public Item delete(Item entity) {
         Transaction transaction=session.beginTransaction();
         try {
-            session.delete(entity);
+            Item item = session.get(Item.class, entity.getId());
+            session.delete(item);
             transaction.commit();
-            return entity;
+            return item;
         }catch (Exception e){
             transaction.rollback();
             e.printStackTrace();
             return null;
         }
+
     }
 
     @Override
     public List<Item> getAll() {
-        String SQL="From item ";
-        List<Item> list = session.createQuery(SQL).list();
-        return new ArrayList<>(list);
+        CriteriaQuery<Item> query = session.getCriteriaBuilder().createQuery(Item.class);
+        query.from(Item.class);
+        List<Item> resultList = session.createQuery(query).getResultList();
+        return resultList;
     }
-
 }

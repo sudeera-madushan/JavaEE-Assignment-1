@@ -26,7 +26,7 @@ public class Convertor {
 
 
     public ItemDTO fromItem(Item item) {
-        return new ItemDTO(item.getId(),item.getName(),item.getQtyOnHand(),item.getUnitPrice(),null);
+        return new ItemDTO(item.getId(),item.getName(),item.getQtyOnHand(),item.getUnitPrice());
     }
     public Item toItem(ItemDTO item) {
         return new Item(item.getId(),item.getName(),item.getQty(),item.getPrice(),null);

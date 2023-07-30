@@ -16,5 +16,4 @@ public class ItemDTO {
     private String name;
     private double qty;
     private double price;
-    private List<OrderDetailsDTO> orderDetails=new ArrayList<>();
 }

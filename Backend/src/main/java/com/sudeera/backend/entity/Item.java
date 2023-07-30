@@ -29,5 +29,7 @@ public class Item extends SuperEntity {
     @OneToMany(mappedBy = "item", targetEntity = OrderDetails.class)
     private List<OrderDetails> orderDetailsList=new ArrayList<>();
 
-
+    public Item(int id) {
+        this.id = id;
+    }
 }

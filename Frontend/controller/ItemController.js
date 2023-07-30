@@ -5,23 +5,37 @@ const itemCodeRegx=/^(I)([0-9]){3}$/;
 const itemNameRegx=/^([A-Za-z]){3,}$/;
 const itemQTYRegx=/^([0-9]){1,}$/;
 const itemPriceRegx = /^\d+(,\d{3})*(\.\d{1,2})?$/;
-
+let itemArr=[];
 let loadItemData= function (){
-    let pre_data=localStorage.getItem(itemData);
-    let item_data_arr=[]
-    if (pre_data){
-    item_data_arr=JSON.parse(pre_data);
-    }
+    $.ajax({
 
-    if (item_data_arr.length>0) {
+        url: 'http://localhost:8080/pos/item',
+        type:'GET',
+        contentType: 'application/json',
+        success:function (response){
+            console.log('Item data get successfully')
+            itemArr=[];
+            itemArr=(response);
+            loadItemDataTable()
+        },
+        error(error){
+            console.error('Failed to save student data .Error : ',error)
+        }
+    })
+
+    closeNewItem();
+}
+function loadItemDataTable(){
+    console.log(itemArr)
+    if (itemArr.length>0) {
         $('#tableItemBody').empty();
-        item_data_arr.map((result, index) => {
+        itemArr.map((result, index) => {
             var data = `
                 <tr>
-                    <th scope="row">${result._id}</th>
-                    <td>${result._name}</td>
-                    <td>${result._qty}</td>
-                    <td>${result._price}</td>
+                    <th scope="row">${result.id}</th>
+                    <td>${result.name}</td>
+                    <td>${result.qty}</td>
+                    <td>${result.price}</td>
                     <td width="15%">
                         <button class="btn btn-success"  id="btn-edite">Edite</button>
                         <button class="btn btn-danger" id="btn-delete">Delete</button>
@@ -32,17 +46,16 @@ let loadItemData= function (){
         })
 
     }
-    closeNewItem();
 }
 
 function showNewItem(item){
     if (!item){
         item=new Item("","","","");
     }
-        $('#itemCodeI').val(item._id);
-        $('#itemNameI').val(item._name);
-        $('#itemQTYI').val(item._qty);
-        $('#itemPriceI').val(item._price);
+        $('#itemCodeI').val(item.id);
+        $('#itemNameI').val(item.name);
+        $('#itemQTYI').val(item.qty);
+        $('#itemPriceI').val(item.price);
     $('#newItemForm').css({
         visibility: "visible",
         top:"50%",
@@ -51,34 +64,63 @@ function showNewItem(item){
 }
 
 function deleteItem(item){
-    let items=JSON.parse(localStorage.getItem(itemData));
-    items.map((value, index) => {
-        if (value._id===item._id){
-            items.splice(index,1);
+    console.log(item)
+    $.ajax({
+
+        url: 'http://localhost:8080/pos/item',
+        type:'DELETE',
+        data:item,
+        contentType: 'application/json',
+        success:function (response){
+            console.log('Item data Delete successfully',response)
+            loadItemData();
+        },
+        error(error){
+            console.error('Failed to Item student data .Error : ',error)
         }
     })
-    localStorage.setItem(itemData,JSON.stringify(items));
     loadItemData();
 }
 
 function addToItemArray(){
-    let pre_data = localStorage.getItem(itemData);
-    let data_arr=[];
-    if(pre_data) {
-        data_arr = JSON.parse(pre_data);
-    }
+    // let pre_data = localStorage.getItem(itemData);
+    // let data_arr=[];
+    // if(pre_data) {
+    //     data_arr = JSON.parse(pre_data);
+    // }
     let item = new Item($('#itemCodeI').val(),
             $('#itemNameI').val(),
             $('#itemQTYI').val(),
             $('#itemPriceI').val());
-    let index =checkItemRecent(data_arr,item._id);
-    if (index!=-1) {
-        data_arr.splice(index,1,item)
-    }else {
-        data_arr.unshift(item);
+    // let index =checkItemRecent(data_arr,item._id);
+    // if (index!=-1) {
+    //     data_arr.splice(index,1,item)
+    // }else {
+    //     data_arr.unshift(item);
+    // }
+    // localStorage.setItem(itemData, JSON.stringify(data_arr));
+    let myItem={
+        id:item._id,
+        name:item._name,
+        qty:item._qty,
+        price:item._price
     }
-    localStorage.setItem(itemData, JSON.stringify(data_arr));
-    loadItemData();
+    let j = JSON.stringify(myItem);
+    $.ajax({
+
+        url: 'http://localhost:8080/pos/item',
+        type:'POST',
+        data:j,
+        contentType: 'application/json',
+        success:function (response){
+            console.log('Item data saved successfully',response)
+            loadItemData()
+        },
+        error(error){
+            console.error('Failed to save Item data .Error : ',error)
+        }
+    })
+    // loadItemData();
 }
 
 function checkItemRecent(arr,id){
@@ -102,19 +144,23 @@ function closeNewItem(){
 }
 
 $('#item-table').on('click','button',(e) =>{
-    let id = e.target.id;
-    let text = $(e.target).closest('tr').find('th').eq(0).text();
-    let itemArray=JSON.parse(localStorage.getItem(itemData));
-    let item;
-    itemArray.map((value, index) => {
-        if (value._id===text){
-            item=value;
-        }
-    });
-    if (id==="btn-edite"){
-        showNewItem(item);
-    }else if(id==="btn-delete"){
-        deleteItem(item);
+    let button = e.target.id;
+    let id = $(e.target).closest('tr').find('th').eq(0).text();
+    let name = $(e.target).closest('tr').find('td').eq(0).text();
+    let qty = $(e.target).closest('tr').find('td').eq(1).text();
+    let price = $(e.target).closest('tr').find('td').eq(2).text();
+    let myItem={
+        id:id,
+        name:name,
+        qty:qty,
+        price:price
+    }
+
+    if (button==="btn-edite"){
+        showNewItem(myItem);
+    }else if(button==="btn-delete"){
+        let j = JSON.stringify(myItem);
+        deleteItem(j);
     }
 });
 
@@ -123,7 +169,7 @@ $('#itemCodeI').on('keyup',(event) =>{
     checkItemCode(event);
 });
 function checkItemCode(event) {
-    if (itemCodeRegx.test($('#itemCodeI').val())) {
+    if (/*itemCodeRegx.test($('#itemCodeI').val())*/true) {
         $('#itemCodeI').css({borderColor: "green"})
         if (event.key === 'Enter') {
             $('#itemNameI').focus();
