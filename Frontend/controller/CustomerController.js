@@ -1,3 +1,4 @@
+
 import {Customer} from "../model/Customer.js";
 
 const cusData="DATA";
@@ -8,61 +9,15 @@ const cusMobileRegx = /^0\d{9}$/;
 const cusSalaryRegx = /^\d+(,\d{3})*(\.\d{1,2})?$/;
 let customerArr=[];
 let deleteCustomer=function (customer){
-    console.log(customer)
-    $.ajax({
-
-        url: 'http://localhost:8080/pos/customer',
-        type:'DELETE',
-        data:customer,
-        contentType: 'application/json',
-        success:function (response){
-            console.log('Student data Delete successfully',response)
-            loadCustomerData()
-        },
-        error(error){
-            console.error('Failed to save student data .Error : ',error)
-        }
-    })
-    loadCustomerData();
+    createAjaxRequest('customer','DELETE',customer,loadCustomerData);
 }
 
 function addToCustomerArray(){
-    // let pre_data = localStorage.getItem(cusData);
-    // let data_arr=[];
-    // if(pre_data) {
-    //     data_arr = JSON.parse(pre_data);
-    // }
-
-    // let index =checkCusResentId(data_arr,customer._id);
-    // if (index!==-1) {
-    //     data_arr[index]._name = $('#customerNameC').val(),
-    //         data_arr[index]._address = $('#customerAddressC').val(),
-    //         data_arr[index]._mobile = $('#customerMobileC').val(),
-    //         data_arr[index]._salary = $('#customerSalaryC').val()
-    //     data_arr.splice(index,1,customer)
-    // }else {
-    //     console.log("+++++++++")
-    //     data_arr.unshift(customer);
-    // }
-    // localStorage.setItem(cusData, JSON.stringify(data_arr));
-    // loadCustomerData();
-
-    // let ss={
-    //     id:0,
-    //     name:"sudeera",
-    //     address:"colombo",
-    //     mobile:"skdkskfnnsf",
-    //     salary:1
-    // }
     let customer = new Customer(parseInt($('#customerIDC').val()),
         $('#customerNameC').val(),
         $('#customerAddressC').val(),
         $('#customerMobileC').val(),
         parseFloat($('#customerSalaryC').val()));
-    createAjaxReq(customer);
-
-}
-let createAjaxReq = (customer) =>{
     let customer1={
         id:customer._id,
         name:customer._name,
@@ -71,21 +26,8 @@ let createAjaxReq = (customer) =>{
         salary:customer._salary
     }
     let jStudent = JSON.stringify(customer1);
-    $.ajax({
+    createAjaxRequest('customer','POST',jStudent,loadCustomerData)
 
-        url: 'http://localhost:8080/pos/customer',
-        type:'POST',
-        data:jStudent,
-        contentType: 'application/json',
-        success:function (response){
-            console.log('Student data saved successfully',response)
-            loadCustomerData()
-        },
-        error(error){
-            console.error('Failed to save student data .Error : ',error)
-        }
-    })
-    loadCustomerData();
 }
 
 function checkCusResentId(arr,id){
@@ -103,27 +45,33 @@ function viewCustomersForm(){
     $('#itemSection').css("display","none")
     $('#orderSection').css("display","none")
 }
-
-function loadCustomerData(){
-    $.ajax({
-
-        url: 'http://localhost:8080/pos/customer',
-        type:'GET',
-        contentType: 'application/json',
-        success:function (response){
-            console.log('Student data get successfully')
-            customerArr=[];
-            customerArr=(response);
-            loadDataTable()
-        },
-        error(error){
-            console.error('Failed to save student data .Error : ',error)
-        }
-    })
+let loadCustomerData = () =>{
+    createAjaxRequest('customer','GET',null,loadDataTable);
+    // console.log("---"+customerArr);
+    // customerArr=[];
+    // loadDataTable()
+    // $.ajax({
+    //
+    //     url: 'http://localhost:8080/pos/customer',
+    //     type:'GET',
+    //     contentType: 'application/json',
+    //     success:function (response){
+    //         console.log('Student data get successfully')
+    //         customerArr=[];
+    //         customerArr=(response);
+    //         loadDataTable()
+    //     },
+    //     error(error){
+    //         console.error('Failed to save student data .Error : ',error)
+    //     }
+    // })
 
     closeNewCustomer();
 }
-function loadDataTable(){
+let loadDataTable = (arr) =>{
+    if (arr){
+        customerArr=arr;
+    }
     if (customerArr) {
         $('#tableCustomerBody').empty();
         customerArr.map((result, index) => {

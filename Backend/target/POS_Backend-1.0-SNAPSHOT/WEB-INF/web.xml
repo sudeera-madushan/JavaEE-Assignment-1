@@ -11,4 +11,12 @@
         <servlet-name>CustomerServlet</servlet-name>
         <url-pattern>/customer</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>ItemController</servlet-name>
+        <servlet-class>com.sudeera.backend.controller.ItemController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ItemController</servlet-name>
+        <url-pattern>/item</url-pattern>
+    </servlet-mapping>
 </web-app>

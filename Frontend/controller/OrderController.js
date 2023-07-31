@@ -8,81 +8,50 @@ function searchCusOrder(){
     let data={
         id:parseInt($('#customerIDOrder').val())
     }
-    $.ajax({
-        url: 'http://localhost:8080/pos/customer',
-        type:'GET',
-        data: data,
-        contentType: 'application/json',
-        success:function (customer){
-            console.log('Student data saved successfully',customer)
-            if (customer!==null){
-                $('#customerNameOrder').val(customer.name);
-                $('#customerAddressOrder').val(customer.address);
-                $('#customerMobileOrder').val(customer.mobile);
-                $('#customerSalaryOrder').val(customer.salary);
-            }else {
-
-                $('#customerNameOrder').val("");
-                $('#customerAddressOrder').val("");
-                $('#customerMobileOrder').val("");
-                $('#customerSalaryOrder').val("");
-                alert("Not Found")
-            }
-        },
-        error(error){
-            console.error('Failed to save student data .Error : ',error)
-        }
-    })
+    createAjaxRequest('customer','GET',data,setToCusFields)
 
 
 }
 
-function searchCusMethod(arr,id){
-    let data={
-        id:parseInt(id)
-    }
-    $.ajax({
+function setToCusFields(customer){
+    if (customer!==null){
+        $('#customerNameOrder').val(customer.name);
+        $('#customerAddressOrder').val(customer.address);
+        $('#customerMobileOrder').val(customer.mobile);
+        $('#customerSalaryOrder').val(customer.salary);
+    }else {
 
-        url: 'http://localhost:8080/pos/customer',
-        type:'GET',
-        data: data,
-        contentType: 'application/json',
-        success:function (response){
-            console.log('Student data saved successfully',response)
-            let obj=JSON.stringify(response)
-            console.log(JSON.parse(obj))
-            // return
-        },
-        error(error){
-            console.error('Failed to save student data .Error : ',error)
-        }
-    })
-    return null;
+        $('#customerNameOrder').val("");
+        $('#customerAddressOrder').val("");
+        $('#customerMobileOrder').val("");
+        $('#customerSalaryOrder').val("");
+        alert("Not Found")
+    }
 }
 
 function searchItemOrder(){
     let itemCode=$('#itemCodeOrder').val();
-    let itemArr=JSON.parse(localStorage.getItem(itemData));
-    let item=searchItemMethod(itemArr,itemCode);
+    // let itemArr=JSON.parse(localStorage.getItem(itemData));
+    // let item=searchItemMethod(itemArr,itemCode);
+    let data={
+        id:parseInt(itemCode)
+    }
+    createAjaxRequest('item','GET',data,setItemFields)
+
+}
+
+function setItemFields(item){
+
     if (item!==null){
-        $('#itemNameOrder').val(item._name);
-        $('#itemPriceOrder').val(item._price);
-        $('#itemQtyOnOrder').val(item._qty);
+        $('#itemNameOrder').val(item.name);
+        $('#itemPriceOrder').val(item.price);
+        $('#itemQtyOnOrder').val(item.qty);
     }else {
         $('#itemNameOrder').val("");
         $('#itemPriceOrder').val("");
         $('#itemQtyOnOrder').val("");
         alert("Not Found");
     }
-}
-
-function searchItemMethod(arr,id){
-    for (const arrElement of arr) {
-        if (arrElement._id===id){
-            return arrElement;
-        }
-    }
-    return null;
 }
 
 function reloadCartData(){

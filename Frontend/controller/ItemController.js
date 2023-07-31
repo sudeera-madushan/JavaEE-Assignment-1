@@ -7,26 +7,14 @@ const itemQTYRegx=/^([0-9]){1,}$/;
 const itemPriceRegx = /^\d+(,\d{3})*(\.\d{1,2})?$/;
 let itemArr=[];
 let loadItemData= function (){
-    $.ajax({
 
-        url: 'http://localhost:8080/pos/item',
-        type:'GET',
-        contentType: 'application/json',
-        success:function (response){
-            console.log('Item data get successfully')
-            itemArr=[];
-            itemArr=(response);
-            loadItemDataTable()
-        },
-        error(error){
-            console.error('Failed to save student data .Error : ',error)
-        }
-    })
-
+    createAjaxRequest('item','GET',null,loadItemDataTable);
     closeNewItem();
 }
-function loadItemDataTable(){
-    console.log(itemArr)
+function loadItemDataTable(arr){
+    if (arr){
+        itemArr=arr;
+    }
     if (itemArr.length>0) {
         $('#tableItemBody').empty();
         itemArr.map((result, index) => {
@@ -64,30 +52,10 @@ function showNewItem(item){
 }
 
 function deleteItem(item){
-    console.log(item)
-    $.ajax({
-
-        url: 'http://localhost:8080/pos/item',
-        type:'DELETE',
-        data:item,
-        contentType: 'application/json',
-        success:function (response){
-            console.log('Item data Delete successfully',response)
-            loadItemData();
-        },
-        error(error){
-            console.error('Failed to Item student data .Error : ',error)
-        }
-    })
-    loadItemData();
+    createAjaxRequest('item','DELETE',item,loadItemData);
 }
 
 function addToItemArray(){
-    // let pre_data = localStorage.getItem(itemData);
-    // let data_arr=[];
-    // if(pre_data) {
-    //     data_arr = JSON.parse(pre_data);
-    // }
     let item = new Item($('#itemCodeI').val(),
             $('#itemNameI').val(),
             $('#itemQTYI').val(),
@@ -106,21 +74,7 @@ function addToItemArray(){
         price:item._price
     }
     let j = JSON.stringify(myItem);
-    $.ajax({
-
-        url: 'http://localhost:8080/pos/item',
-        type:'POST',
-        data:j,
-        contentType: 'application/json',
-        success:function (response){
-            console.log('Item data saved successfully',response)
-            loadItemData()
-        },
-        error(error){
-            console.error('Failed to save Item data .Error : ',error)
-        }
-    })
-    // loadItemData();
+    createAjaxRequest('item','POST',j,loadItemData);
 }
 
 function checkItemRecent(arr,id){
